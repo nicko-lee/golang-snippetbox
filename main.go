@@ -12,7 +12,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	// Else it would keep executing and also write the "Hello from Snippetbox" message.
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
-		return
+		return 
 	}
 
 	w.Write([]byte("Hello from Snippetbox"))
@@ -25,6 +25,14 @@ func showSnippet(w http.ResponseWriter, r *http.Request) {
 
 // Handler function for /snippet/create route
 func createSnippet(w http.ResponseWriter, r *http.Request) {
+	// Check whether the request is using POST (we only want to respond to POST methods on this route).
+	// Note that http.MethodPost is a constant equal to the string "POST".
+	if r.Method != http.MethodPost{
+		w.WriteHeader(405) // writes to header as its name suggests
+		w.Write([]byte("Method Not Allowed")) // writes to body
+		return
+	}
+
 	w.Write([]byte("Create a new snippet..."))
 }
 
