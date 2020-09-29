@@ -10,11 +10,23 @@ func home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello from Snippetbox"))
 }
 
+// Handler function for /snippet route
+func showSnippet(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Display a specific snippet..."))
+}
+
+// Handler function for /snippet/create route
+func createSnippet(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Create a new snippet..."))
+}
+
 func main() {
 	// Initialize new servemux (router)
 	// Then register the home function as the handler for the "/" URL pattern
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
+	mux.HandleFunc("/snippet", showSnippet)
+	mux.HandleFunc("/snippet/create", createSnippet)
 
 	// Spin up a new web server and pass it the servemux (router) we just created + a port number
 	// If http.ListenAndServe() returns an error we use the log.Fatal() function to log the error message and exit.
