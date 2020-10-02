@@ -28,9 +28,9 @@ func createSnippet(w http.ResponseWriter, r *http.Request) {
 	// Check whether the request is using POST (we only want to respond to POST methods on this route).
 	// Note that http.MethodPost is a constant equal to the string "POST".
 	if r.Method != http.MethodPost{
-		w.WriteHeader(405) // writes to header as its name suggests
-		w.Write([]byte("Method Not Allowed")) // writes to body
-		return
+		w.Header().Set("Allow", http.MethodPost) // tell the user we only accept POST here
+		http.Error(w, "Method Not Allowed", 405)
+		return // so it never runs the line below
 	}
 
 	w.Write([]byte("Create a new snippet..."))
