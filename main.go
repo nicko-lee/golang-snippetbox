@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 // Home handler function which writes a byte slice containing "Hello from Snippetbox" as the response body
@@ -20,7 +22,18 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 // Handler function for /snippet route
 func showSnippet(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Display a specific snippet..."))
+	// Extract value from id parameter from query string and try to convert to integer for the next step
+	// which is validation of user input
+	// If can't be converted to int or if value is less than 1, we return 404
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil || id < 1 {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Use fmt. Fprintf() to interpolate the id value with our response and write it to 
+	// http.ResponseWriter. This is easier to use than w.Write([]byte("Hello"))
+	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
 }
 
 // Handler function for /snippet/create route
