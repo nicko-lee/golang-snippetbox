@@ -6,3 +6,5 @@ A web app which lets people paste and share snippets of text, similar to Pastebi
 2. How to add new routes to a Go server. First create a handler function then register the handler function into the servemux mapping it to the route you want it to route from.
 3. Distinguish between fixed path and subtree URL patterns.
 4. How to customize HTTP headers when responding to client.
+5. How to get handler to accept query string parameters from the user and validate/sanitize and use it.
+6. Project structure best practices based on [Peter Bourgon's Go Best Practices](https://peter.bourgon.org/go-best-practices-2016/#repository-structure)
