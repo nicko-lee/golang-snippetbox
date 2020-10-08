@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"log"
+	"html/template"
 )
 
 // Home handler function which writes a byte slice containing "Hello from Snippetbox" as the response body
@@ -16,7 +18,32 @@ func home(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 
-	w.Write([]byte("Hello from Snippetbox"))
+	// Initialize a slice with paths to the two files. Order is important
+	files := []string{
+		"./ui/html/home.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+		"./ui/html/footer.partial.tmpl",
+	}
+
+
+	// Read in template file. If there is an error while reading, log the detailed error message and use
+	// the http.Error() function to send a 500 Internal Server Error response to the user.
+	// Can pass the slice of file paths as a variadic param
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+		return
+	}
+
+	// If no issue with template parsing, then we execute the template by using the Execute() method on the
+	// template set to write the  template content as the response body. The last parameter to Execute()
+	// lets us pass in any dynamic data we want to pass to the template
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Internal Server Error", 500)
+	}
 }
 
 // Handler function for /snippet route
