@@ -9,3 +9,4 @@ A web app which lets people paste and share snippets of text, similar to Pastebi
 5. How to get handler to accept query string parameters from the user and validate/sanitize and use it.
 6. Project structure best practices based on [Peter Bourgon's Go Best Practices.](https://peter.bourgon.org/go-best-practices-2016/#repository-structure)
 7. Learn HTML templating and template composition (quite a bit like with React components) and how to read, parse and execute template sets in the relevant handler. So now we can return HTML to the user not just plaintext and JSON.
+8. How to serve static files by creating a http.fileServer handler and giving it a directory on the server file system to bind to.
