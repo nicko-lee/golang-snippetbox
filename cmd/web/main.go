@@ -1,11 +1,20 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 )
 
 func main() {
+	// Define a new command-line flag. Params are flag name, default value, and brief description.
+	// The value of the flag will be stored in the addr variable at runtime.
+	addr := flag.String("addr", ":4000", "HTTP network address")
+
+	// Parse CLI flag
+	flag.Parse()
+
+
 	// Initialize new servemux (router)
 	// Then register the home function as the handler for the "/" URL pattern
 	mux := http.NewServeMux()
@@ -19,10 +28,10 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
-	// Spin up a new web server and pass it the servemux (router) we just created + a port number
+	// Spin up a new web server and pass it the servemux (router) we just created + a port number (user supplied via CLI flag)
 	// If http.ListenAndServe() returns an error we use the log.Fatal() function to log the error message and exit.
 	// Note that any error returned by http.ListenAndServe() is always non-nil.
-	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", mux)
+	log.Printf("Starting server on %s", *addr)
+	err := http.ListenAndServe(*addr, mux)
 	log.Fatal(err)
 }
